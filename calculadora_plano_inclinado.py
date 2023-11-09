@@ -1,24 +1,29 @@
-def funcao(x):
-    return x**2 + x
+from math import *
+gravidade = 9.8
+inclinacao_plano = float(input("Informe a inclinação do plano em graus "))
+coef_E = float(input("Informe o coeficiente estático "))
+coef_C = float(input("Informe o coeficiente cinético "))
+massa = float(input("Informe a massa do objeto em kilogramas "))
+forca = float(input("Informe a força no objeto em Newtons "))
+inclinacao_forca = float(input("Informe a inclinação da força no objeto em graus "))
 
-def teorema_do_valor_intermediario():
-    valor1 = float(input("Digite o primeiro valor do intervalo "))
-    valor2 = float(input("Digite o segundo valor do intervalo "))
-    if (funcao(valor1) * funcao(valor2)) >= 0:
-        print("Não é possível aplicar o Teorema do Valor Intermediário neste intervalor.")
-        continuar = input("Deseja continuar? (S,N)").upper()
-        if continuar == "S":
-            teorema_do_valor_intermediario()
-        else:
-            return
-    while abs(valor2 - valor1) > 0.00001:
-        c = (valor1 + valor2)/2
-        if funcao(c) == 0:
-                return print(f"A raiz da funcao é: {c}")
-        elif funcao(valor1) * funcao(c) < 0:
-            valor2 = c
-        else:
-            valor1 = c  
-    return print(f"A raiz da funcao é: {(valor1 + valor2)/2}")
-
-teorema_do_valor_intermediario()
+Peso_x = massa * gravidade * sin((inclinacao_plano * pi)/180)
+Peso_y = massa * gravidade * cos((inclinacao_plano * pi)/180)
+Forca_x = forca * cos(((inclinacao_forca - inclinacao_plano) * pi)/180)
+Forca_y = forca * sin(((inclinacao_forca - inclinacao_plano) * pi)/180)
+Normal = Peso_y - Forca_y
+Fat_Max = coef_E * Normal
+Fat_Cin = coef_C * Normal
+print(f"Peso = {massa * gravidade:.2f} N")
+print(f"Peso X = {Peso_x:.2f} N")
+print(f"Peso Y = {Peso_y:.2f} N")
+print(f"Forca X = {Forca_x:.2f} N")
+print(f"Forca Y = {Forca_y:.2f} N")
+print(f"Normal = {Normal:.2f} N")
+print(f"Força de atrito máximo = {Fat_Max:.2f} N")
+print(f"Força de atrito cinético = {Fat_Cin:.2f} N")
+if Fat_Max >= abs(Forca_x):
+    print("Aceleração = 0.0 m/s^2")
+else:
+    Aceleracao = (Forca_x - Fat_Cin - Peso_x)/ massa 
+    print(f"Aceleração = {Aceleracao:.3f} m/s^2")
